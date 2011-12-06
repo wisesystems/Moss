@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <namespaces>
-	<definition namespace="autodoc" path="../component/" />
 	<definition namespace="Twig" path="../component/" />
+
+	<definition namespace="autodoc" path="../component/" />
 </namespaces>
