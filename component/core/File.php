@@ -98,6 +98,11 @@ class File extends \SplFileObject {
 		return $fp->file($this->realpath);
 	}
 
+	public function header() {
+		$fp = new \finfo(FILEINFO_MIME);
+		return 'Content-type: '.$fp->file($this->realpath);
+	}
+
 	/**
 	 * Retrieves file real path to file
 	 *
@@ -140,29 +145,42 @@ class File extends \SplFileObject {
 	 * @param string $file original filename
 	 * @return string
 	 */
-	protected function makeFileName($file) {
+	public function makeFileName($file) {
+		$tArr = explode('.', basename($file));
+		$fileExtension = array_pop($tArr);
+		$fileName = implode('.', $tArr);
+		unset($tArr);
+
+		$dirContent = array();
+		foreach(new \DirectoryIterator(dirname($file)) as $item) {
+			if($item->isDot()) {
+				continue;
+			}
+
+			$dirContent[] = (string) $item;
+		}
+
 		$postfix = 0;
-		$file = explode('.', basename($file));
-		$fCount = count($file);
-
-		$name = NULL;
-		$extension = $file[$fCount - 1];
-
-		for($i = 0; $i < $fCount - 1; $i++) {
-			$name .= $file[$i];
+		$newName = $this->joinFileName($fileName, $fileExtension, $postfix);
+		while(in_array($newName, $dirContent)) {
+			$newName = $this->joinFileName($fileName, $fileExtension, $postfix++);
 		}
 
-		$name = $this->strip($name);
+		var_dump($newName);
+		return $newName;
+	}
 
-		$testName =  $name.($postfix ? '_'.$postfix : null).'.'.$extension;
-
-		// TODO - zamienic is_file na tablice
-		while(is_file($this->dir.$testName)) {
-			$postfix++;
-			$testName = $name.($postfix ? '_'.$postfix : null).'.'.$extension;
-		}
-
-		return $testName;
+	/**
+	 * Joins file name into string including postfix
+	 * If postfix is greater than 0, will be inserted before extension, otherwise is ignored
+	 *
+	 * @param string $name file name
+	 * @param string $extension file extension
+	 * @param int $postfix decimal postfix
+	 * @return string
+	 */
+	private function joinFileName($name, $extension, $postfix = 0) {
+		return $name.($postfix ? '_'.$postfix : null).'.'.$extension;
 	}
 
 	/**

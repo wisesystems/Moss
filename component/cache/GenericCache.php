@@ -31,6 +31,7 @@ class GenericCache implements CacheInterface, PersistentInterface {
 	 */
 	public function __construct(Config $Config) {
 		$this->path = $Config->getDirectory('cache');
+		$this->makePath($this->path);
 		$this->registry = rtrim($this->path, '/').'/'.$this->registry;
 	}
 
@@ -245,5 +246,20 @@ class GenericCache implements CacheInterface, PersistentInterface {
 		$this->write();
 	}
 
+	/**
+	 * Creates defined directory if does not exists
+	 *
+	 * @param string $path path to directory
+	 * @return mixed
+	 * @throws \RuntimeException
+	 */
+	protected function makePath($path) {
+		if(is_dir($path)) {
+			return;
+		}
 
+		if(!mkdir($path, 0644, true)) {
+			throw new \RuntimeException(sprintf('Unable to create cache dir %s', $path));
+		}
+	}
 }

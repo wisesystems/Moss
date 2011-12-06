@@ -14,6 +14,7 @@ class Thumb {
 	protected $quality;
 	protected $noImage;
 
+	protected $treeDir = true;
 	protected $noScaleUp = true;
 
 	protected $sharpenMatrix = array(array(-1, -1, -1), array(-1, 16,-1), array(-1, -1, -1));
@@ -140,11 +141,11 @@ class Thumb {
 			break;
 		}
 
-		imagealphablending($srcImg, true);
-
 		if(!isset($srcImg)) {
 			throw new \InvalidArgumentException('Source image could not be set');
 		}
+
+		imagealphablending($srcImg, true);
 
 		return $srcImg;
 	}
@@ -260,19 +261,65 @@ class Thumb {
 
 		$dir = explode('/', $this->thumbDir);
 		$path = str_replace($dir, null, dirname($src));
+		$path = trim($path, '\\/');
+
 		$path = preg_replace('#[^\d\w]#', '_', dirname($path));
 
 		$name = explode('.', basename($src));
 		array_pop($name);
 		$name = implode('', $name);
+		$name = $this->strip($name);
 
 		$name = sprintf('%s_%s_%sx%s_%s.%s', $path, $name, $width, $height, $cropped ? 'c' : 'n', $transparency ? 'png' : 'jpg');
 		$name = str_replace('__', '_', $name);
 		if(strpos($name, '_') === 0) {
 			$name = substr($name, 1);
 		}
-		$name = str_replace('//', '/', $this->thumbDir.$name);
+
+		$path = $this->thumbDir;
+
+		if($this->treeDir) {
+			$path .= $name[0].'/'.(isset($name[1]) ? $name[1].'/' : null);
+		}
+
+		$this->makePath($path);
+
+		$name = str_replace('//', '/', $path.$name);
 
 		return $name;
+	}
+
+	/**
+	 * Strips string from non ASCII chars
+	 *
+	 * @param string $string string to strip
+	 * @param string $separator char replacing non ASCII chars
+	 * @return string
+	 */
+	protected function strip($string, $separator = '-') {
+		$string = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $string);
+		$string = strtolower($string);
+		$string = preg_replace('#[^\w\. \-]+#i', null, $string);
+		$string = preg_replace('/[ -]+/', $separator, $string);
+		$string = trim($string, '-.');
+
+		return $string;
+	}
+
+	/**
+	 * Creates defined directory if does not exists
+	 *
+	 * @param string $path path to directory
+	 * @return mixed
+	 * @throws \RuntimeException
+	 */
+	protected function makePath($path) {
+		if(is_dir($path)) {
+			return;
+		}
+
+		if(!mkdir($path, 0644, true)) {
+			throw new \RuntimeException(sprintf('Unable to create cache dir %s', $path));
+		}
 	}
 }

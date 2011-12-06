@@ -18,12 +18,9 @@
 
 	<component id="Thumb" class="\component\core\Thumb" shared="true">
 		<arguments>
-			<argument type="variable">./upload/</argument>
+			<argument type="variable">./upload/thumb/</argument>
 			<argument type="variable">85</argument>
 			<argument type="variable">./image/no_image.png</argument>
-			<argument type="variable">./image/watermark.png</argument>
-			<argument type="variable">-5</argument>
-			<argument type="variable">-5</argument>
 		</arguments>
 	</component>
 
