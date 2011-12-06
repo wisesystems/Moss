@@ -1,0 +1,23 @@
+<?php
+namespace {{ namespace }}\entity;
+
+use \lib\entity\Entity;
+
+class {{ entity|ucfirst }} extends Entity {
+
+{% for Field in Fields %}
+	protected ${{ Field.identify }};
+{% endfor %}
+
+	/**
+	 * Identifies entity.
+	 * If argument passed sets new identifier
+	 *
+	 * @param null|int|string $identifier entity identifier
+	 * @return mixed
+	 */
+	public function identify($identifier = null) {
+		// TODO - implement identify();
+		throw new \LogicException('Unimplemented identify() in {{ entity }}');
+	}
+}

@@ -1,0 +1,43 @@
+<?php
+namespace {{ namespace }}\model;
+
+use \lib\model\ModelInterface;
+
+use \lib\Request;
+use \lib\Container;
+
+use \lib\entity\EntityInterface;
+use \lib\entity\Collection;
+
+use \{{ namespace }}\entity\{{ entity|ucfirst }};
+use \{{ namespace }}\storage\{{ entity|ucfirst }}Storage;
+
+class {{ entity|ucfirst }}Model implements ModelInterface {
+
+	/**
+	 * @var \lib\Container
+	 */
+	protected $Container;
+
+	/**
+	 * @var \{{ namespace }}\storage\{{ entity|ucfirst }}Storage
+	 */
+	protected $Storage;
+
+	public function __construct(Container $Container) {
+		$this->Container = &$Container;
+
+		$this->Storage = new {{ entity|ucfirst }}Storage( $this->Container->getComponent('DatabaseAdapter') );
+	}
+
+	/**
+	 * Resets model
+	 *
+	 * @return \{{ namespace }}\model\{{ entity|ucfirst }}Model
+	 */
+	public function reset() {
+		$this->Storage->reset();
+
+		return $this;
+	}
+}

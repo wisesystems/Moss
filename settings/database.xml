@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database>
+	<driver>mysql</driver>
+	<hostname>localhost</hostname>
+	<port>3306</port>
+	<database></database>
+	<username></username>
+	<password></password>
+	<charset>utf8</charset>
+</database>

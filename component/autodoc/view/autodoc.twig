@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<base href="{{ Request.baseName }}" >
+
+	<title>{{ Locale('autodoc.title') }}</title>
+
+	<link rel="author" href="./humans.txt" />
+	
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+{% for script in js %}
+	<script type="text/javascript" src="{{ script }}"></script>
+{% endfor %}
+
+{% for style in css %}
+	<link rel="stylesheet" href="{{ style.file }}" type="text/css" media="{{ style.media }}"/>
+{% endfor %}
+</head>
+<body>
+
+<header id="header">
+	<h1>{{ Locale('autodoc.title') }}</h1>
+</header>
+
+<nav>
+	<ul>
+		{% for Class in Doc %}
+		<li>
+			<a href="{{ Request.self }}#{{ Class.hash }}">{{ Class.name }}</a>
+			<ul>
+			{% for Method in Class.method %}
+				<li {% if not Method.desc %}class="nodesc"{% endif %}>
+					<a href="{{ Request.self }}#{{ Method.hash }}">{{ Method.name }}</a>
+				</li>
+			{% endfor %}
+			</ul>
+		</li>
+		{% endfor %}
+	</ul>
+</nav>
+
+<ul>
+	{% for Class in Doc %}
+	<li id="{{ Class.hash }}">
+		<h2>
+			{% if Class.interface %}
+			<span class="type">interface</span>
+			{% elseif Class.abstract %}
+			<span class="type">abstract</span>
+			{% endif %}
+
+			{{ Class.name }}
+
+			{% if Class.extends %} <span class="type">extends</span> <a href="{{ Request.self }}#{{ Class.extends.hash }}"><span class="type">{{ Class.extends.name }}</span></a>{% endif %}
+		</h2>
+
+		<p>
+			{{ Class.desc }}
+			<span class="package"><em>Package:</em> <strong>{{ Class.package }}</strong></span>
+			<span class="author"><em>Author:</em> <strong>{{ Class.author }}</strong></span>
+		</p>
+
+		<ul>
+		{% for Method in Class.method %}
+			<li id="{{ Method.hash }}">
+				<h3>
+					<span class="type">
+					{% if Method.abstract and not Class.interface %}
+					abstract
+					{% endif %}
+
+					{% if Method.static %}
+					static
+					{% endif %}
+
+					{% if Method.public %}
+					public
+					{% elseif  Method.protected %}
+					protected
+					{% elseif  Method.private %}
+					private
+					{% endif %}
+					</span>
+
+					{{ Class.name}} :: {{ Method.name }} (
+
+					{% for Param in Method.param %}
+						{% if Param.rel %}
+						<a href="{{ Request.self }}#{{ Param.rel }}">
+						{% endif %}
+
+						{% if Param.required %}
+							<span class="type">{{ Param.type }}</span> <span class="name">{{ Param.name }}</span>
+						{% else %}
+							[ <span class="type">{{ Param.type }}</span> <span class="name">{{ Param.name }}</span> = <span class="default">{{ Param.default }}</span> ]
+						{% endif %}
+
+						{% if Param.rel %}
+						</a>
+						{% endif %}
+
+						{% if not loop.last %} , {% endif %}
+					{% endfor %} )
+				</h3>
+
+				<p>{{ Method.desc }}</p>
+
+				<ul>
+					{% for Type in Method.attributes %}
+					{% for Attr in Type %}
+					<li>
+						<span class="param">{{ Attr.param }}</span>
+
+						{% if Attr.rel %}
+						<a href="{{ Request.self }}#{{ Attr.rel }}">
+						{% endif %}
+							<span class="type">{{ Attr.type }}</span>
+						{% if Attr.rel %}
+						</a>
+						{% endif %}
+
+						<span class="name">{{ Attr.name }}</span>
+						{{ Attr.desc }}
+					</li>
+					{% endfor %}
+					{% endfor %}
+				</ul>
+
+				<a class="up" href="{{ Request.self }}#header">{{ Locale('autodoc.up') }}</a>
+			</li>
+		{% endfor %}
+		</ul>
+	</li>
+	{% endfor %}
+</ul>
+
+</body>
+</html>

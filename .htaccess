@@ -1,0 +1,10 @@
+#Rewriting
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+# Uncomment if domains points to ./ directory
+#	RewriteRule ^.*$ web/?webRedirect=1 [L]
+
+# Uncomment if domain points to ./web/ directory
+	RewriteRule ^.*$ web [L]
+</IfModule>

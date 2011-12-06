@@ -1,0 +1,9 @@
+/* TEAM */
+	Author:Michal Wachowski
+	Site: http://mwachowski.pl
+	Contact: wachowski.michal [at] gmail.com
+	From:Gorzow Wlkp, lubuskie, Poland
+
+/* SITE */
+	Doctype:HTML5
+	IDE: phpStorm

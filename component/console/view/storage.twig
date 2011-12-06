@@ -1,0 +1,22 @@
+<?php
+namespace {{ namespace }}\storage;
+
+use \lib\storage\Storage;
+use \lib\storage\AdapterInterface;
+
+class {{ entity|ucfirst }}Storage extends Storage {
+
+	public function __construct(AdapterInterface $Adapter) {
+		$this->Adapter = &$Adapter;
+
+		$this
+			->container('{{ table }}')
+			->entity('{{ namespace }}\entity\{{ entity|ucfirst }}')
+			->collection('\lib\entity\Collection')
+
+{% for Field in Fields %}
+			->field('{{ Field.identify() }}', {% if Field.isRequired %}true{% else %}false{% endif %}, '{{ Field.getTypeChar }}', {% if Field.isIndex %}true{% else %}false{% endif %}, {% if Field.isPrimary %}true{% else %}false{% endif %})
+{% endfor %}
+		;
+	}
+}

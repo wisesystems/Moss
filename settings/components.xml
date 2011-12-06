@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components>
+	<component id="Cookie" class="\lib\Cookie" shared="true" />
+	<component id="Session" class="\lib\Session" shared="true"/>
+
+	<component id="Cache" class="\component\cache\GenericCache" shared="true">
+		<arguments>
+			<argument type="component">Config</argument>
+		</arguments>
+	</component>
+
+	<component id="Locale" class="\lib\locale\Locale" shared="true">
+		<arguments>
+			<argument type="component">Request</argument>
+			<argument type="component">Config</argument>
+		</arguments>
+	</component>
+
+	<component id="Thumb" class="\component\core\Thumb" shared="true">
+		<arguments>
+			<argument type="variable">./upload/</argument>
+			<argument type="variable">85</argument>
+			<argument type="variable">./image/no_image.png</argument>
+			<argument type="variable">./image/watermark.png</argument>
+			<argument type="variable">-5</argument>
+			<argument type="variable">-5</argument>
+		</arguments>
+	</component>
+
+	<component id="View" class="\lib\View" shared="false">
+		<arguments>
+			<argument type="variable">../settings/view.xml</argument>
+			<argument type="container"/>
+		</arguments>
+	</component>
+
+	<component id="Log" class="\component\core\Log" shared="true"/>
+</components>

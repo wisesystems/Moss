@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view>
+	<compress>false</compress>
+
+	<reserved>
+	</reserved>
+
+	<extensions>
+		<extension name="Twig_Extension_Url">
+			<arguments>
+				<argument type="component">Router</argument>
+			</arguments>
+		</extension>
+
+		<extension name="Twig_Extension_Locale">
+			<arguments>
+				<argument type="component">Locale</argument>
+			</arguments>
+		</extension>
+
+		<extension name="Twig_Extension_Thumb">
+			<arguments>
+				<argument type="component">Thumb</argument>
+			</arguments>
+		</extension>
+
+		<extension name="Twig_Extension_Text"/>
+		<extension name="Twig_Extension_Number"/>
+	</extensions>
+</view>

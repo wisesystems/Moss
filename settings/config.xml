@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<cache>0</cache>
+	<debug>1</debug>
+	<namespaces>../settings/namespaces.xml</namespaces>
+
+	<directories>
+		<cache>../cache/</cache>
+		<compile>../compile/</compile>
+		<image>./image/</image>
+		<script>./script/</script>
+		<style>./css/</style>
+		<thumb>./upload/thumb/</thumb>
+		<upload>./upload/</upload>
+	</directories>
+
+	<routes>
+		<autodoc>../component/autodoc/routes.xml</autodoc>
+	</routes>
+
+	<components>
+		<default>../settings/components.xml</default>
+	</components>
+
+	<listeners>
+		<default>../settings/listeners.xml</default>
+	</listeners>
+
+	<locales>
+		<pl>../component/autodoc/locale.pl.xml</pl>
+	</locales>
+</config>
